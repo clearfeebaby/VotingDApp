@@ -9,11 +9,8 @@ function FormRegisteringVoters({ contract, accounts, userStatus, voterAdresses, 
             console.log(voterWallet)
             const transac = await contract.methods.addVoter(voterWallet).send({ from: accounts[0] });
             // const addedVoter = await transac.events.VoterRegistered.returnValues.voterAddress;
-            setVoterAdresses((voterWallet) => {
-                let newVoterAdress = [...voterAdresses, voterWallet]
-                return newVoterAdress;
-            })
-            setVoterWallet('');
+            setVoterAdresses([...voterAdresses, voterWallet])
+            // setVoterWallet('');
             console.log(`[registerVoter] - Le voter ${voterWallet} a ete ajoute`)
         } catch (error) {
             console.error(error.message);
@@ -21,6 +18,7 @@ function FormRegisteringVoters({ contract, accounts, userStatus, voterAdresses, 
     }
     // console.log('userStatus ?' + userStatus)
     //remplacer par form ?
+
     return (
         <div>
             {userStatus === 'owner' ? <div className=" w-full text-center">

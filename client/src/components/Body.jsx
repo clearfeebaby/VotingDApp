@@ -76,7 +76,7 @@ function Body({ statusWorkflowNb, setstatusWorkflowNb, userStatus, voterAdresses
                 setRenderStep(<div>Oops il semblerait que cette étape soit inconnue.</div>);
                 break;
         }
-    }, [statusWorkflowNb, accounts, contract, userStatus]);
+    }, [statusWorkflowNb, accounts, contract, userStatus, voterAdresses]);
     return (
         <main style={{ backgroundColor: '#232327' }} className=" w-full px-16 py-10 h-screen">
             <div style={{ left: '50%', top: '50%', transform: 'translate(-50, -50)' }} className="absolute">

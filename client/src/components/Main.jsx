@@ -38,7 +38,8 @@ function Main() {
                 to: 'latest'
             };
             const events = await contract.getPastEvents('VoterRegistered', options)
-            setVoterAdresses(events.map(event => event.returnValues.voterAddress))
+            const voterAdressesArr = await events.map(event => event.returnValues.voterAddress)
+            setVoterAdresses(voterAdressesArr)
             // console.log('[getVotersAdresses] - voterAdresses | ');
             // console.log(voterAdresses);
         };
