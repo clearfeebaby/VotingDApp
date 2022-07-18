@@ -7,7 +7,7 @@ import VotesTallied from "./VotesTallied";
 import VotingSessionEnded from "./VotingSessionEnded";
 import VotingSessionStarted from "./VotingSessionStarted";
 
-function Body({ statusWorkflowNb, setstatusWorkflowNb, userStatus, voterAdresses, setVoterAdresses }) {
+function Body({ statusWorkflowNb, setstatusWorkflowNb, userStatus, voterAdresses, setVoterAdresses, proposals, setProposals }) {
     const [renderStep, setRenderStep] = useState(<></>);
     const { state: { contract, accounts } } = useEth();
     const workflowStatus = {
@@ -51,14 +51,15 @@ function Body({ statusWorkflowNb, setstatusWorkflowNb, userStatus, voterAdresses
         // console.log(workflowStatus[statusWorkflowNb])
         // if (workflowStatus[statusWorkflowNb] === 'RegisteringVoters') console.log('yes')
         // else console.log('no')
-        console.log(statusWorkflowNb)
-        console.log(workflowStatus[statusWorkflowNb])
+        // console.log(statusWorkflowNb)
+        // console.log(workflowStatus[statusWorkflowNb])
+        console.log('userStatus', userStatus)
         switch (workflowStatus[statusWorkflowNb]) {
             case 'RegisteringVoters':
                 setRenderStep(<FormRegisteringVoters contract={contract} accounts={accounts} userStatus={userStatus} voterAdresses={voterAdresses} setVoterAdresses={setVoterAdresses} />);
                 break;
             case 'startProposalsRegistering':
-                setRenderStep(<ProposalsRegistrationStarted />);
+                setRenderStep(<ProposalsRegistrationStarted contract={contract} accounts={accounts} userStatus={userStatus} proposals={proposals} setProposals={setProposals} />);
                 break;
             case 'endProposalsRegistering':
                 setRenderStep(<ProposalsRegistrationEnded />);
@@ -76,7 +77,7 @@ function Body({ statusWorkflowNb, setstatusWorkflowNb, userStatus, voterAdresses
                 setRenderStep(<div>Oops il semblerait que cette étape soit inconnue.</div>);
                 break;
         }
-    }, [statusWorkflowNb, accounts, contract, userStatus, voterAdresses]);
+    }, [statusWorkflowNb, accounts, contract, userStatus, voterAdresses, proposals]);
     return (
         <main style={{ backgroundColor: '#232327' }} className=" w-full px-16 py-10 h-screen">
             <div style={{ left: '50%', top: '50%', transform: 'translate(-50, -50)' }} className="absolute">

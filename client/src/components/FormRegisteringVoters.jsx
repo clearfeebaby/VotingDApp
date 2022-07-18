@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 function FormRegisteringVoters({ contract, accounts, userStatus, voterAdresses, setVoterAdresses }) {
     const [voterWallet, setVoterWallet] = useState('');
@@ -6,19 +6,20 @@ function FormRegisteringVoters({ contract, accounts, userStatus, voterAdresses, 
 
     const registerVoter = async () => {
         try {
-            console.log(voterWallet)
+            // console.log(voterWallet)
             const transac = await contract.methods.addVoter(voterWallet).send({ from: accounts[0] });
             // const addedVoter = await transac.events.VoterRegistered.returnValues.voterAddress;
             setVoterAdresses([...voterAdresses, voterWallet])
             // setVoterWallet('');
-            console.log(`[registerVoter] - Le voter ${voterWallet} a ete ajoute`)
+            // console.log(`[registerVoter] - Le voter ${voterWallet} a ete ajoute`)
         } catch (error) {
             console.error(error.message);
         }
     }
-    // console.log('userStatus ?' + userStatus)
+    // console.log('contract.userStatus ?' + contract.userStatus)
     //remplacer par form ?
 
+    console.log(contract)
     return (
         <div>
             {userStatus === 'owner' ? <div className=" w-full text-center">
@@ -30,7 +31,7 @@ function FormRegisteringVoters({ contract, accounts, userStatus, voterAdresses, 
                     </thead>
                     <tbody>
                         <tr>
-                            {voterAdresses.map(voterAdress => <td key={voterAdress}>${voterAdress}</td>)}
+                            {voterAdresses.map(voterAdress => <td key={voterAdress}>{voterAdress}</td>)}
                         </tr>
                     </tbody>
                 </table>

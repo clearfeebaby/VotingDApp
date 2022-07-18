@@ -9,6 +9,7 @@ function Main() {
     const [statusWorkflowNb, setstatusWorkflowNb] = useState(0);
     const [userStatus, setUserStatus] = useState('');
     const [owner, setOwner] = useState(false);
+    const [proposals, setProposals] = useState([]);
     const [voterAdresses, setVoterAdresses] = useState([]);
 
     useEffect(() => {
@@ -44,6 +45,32 @@ function Main() {
             // console.log(voterAdresses);
         };
 
+        const getProposals = async () => {
+            // console.log('getProposals')
+
+            let options = {
+                fromBlock: '0',
+                to: 'latest'
+            };
+            try {
+                const listProposals = await contract.getPastEvents('ProposalRegistered', options).then(
+                    async (r) => {
+                        // console.log("r = ", r)
+                        let toArray = [];
+                        for (const k in r) {
+                            let id = r[k].returnValues[0];
+                            await contract.methods.getOneProposal(id).call({ from: accounts[0] }).then((r) => {
+                                toArray.push(r.description);
+                            });
+                        }
+                        setProposals(toArray);
+                    }
+                );
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
         const getUserStatus = async () => {
             if (owner) return setUserStatus('owner')
             voterAdresses.indexOf(accounts[0]) !== -1 ? setUserStatus('voter') : setUserStatus('nonVoter')
@@ -58,7 +85,8 @@ function Main() {
             getstatusWorkflowNb();
             getVotersAdresses();
             // if (voterAdresses.length > 0) getUserStatus()
-            getUserStatus()
+            getUserStatus();
+            getProposals();
         }
     }, [statusWorkflowNb, owner, accounts, contract]);
     // [statusWorkflowNb, accounts, contract, owner, voterAdresses]
@@ -66,7 +94,7 @@ function Main() {
     return (
         <>
             <Header statusWorkflowNb={statusWorkflowNb} userStatus={userStatus} />
-            {userStatus === 'nonVoter' ? <div className="bg-black">Désolé mais vous n'avez pas accès au vote</div> : <Body statusWorkflowNb={statusWorkflowNb} setstatusWorkflowNb={setstatusWorkflowNb} userStatus={userStatus} voterAdresses={voterAdresses} setVoterAdresses={setVoterAdresses} />}
+            {userStatus === 'nonVoter' ? <div className="bg-black">Désolé mais vous n'avez pas accès au vote</div> : <Body statusWorkflowNb={statusWorkflowNb} setstatusWorkflowNb={setstatusWorkflowNb} userStatus={userStatus} voterAdresses={voterAdresses} setVoterAdresses={setVoterAdresses} proposals={proposals} setProposals={setProposals} />}
             <Footer />
         </>
     );
