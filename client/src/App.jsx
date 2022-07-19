@@ -1,5 +1,6 @@
 import { EthProvider } from "./contexts/EthContext";
 import './index.css';
+import './App.css';
 import Main from "./components/Main";
 
 

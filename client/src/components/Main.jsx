@@ -92,11 +92,11 @@ function Main() {
     // [statusWorkflowNb, accounts, contract, owner, voterAdresses]
 
     return (
-        <>
+        <div className="text-xl">
             <Header statusWorkflowNb={statusWorkflowNb} userStatus={userStatus} />
             {userStatus === 'nonVoter' ? <div className="bg-black">Désolé mais vous n'avez pas accès au vote</div> : <Body statusWorkflowNb={statusWorkflowNb} setstatusWorkflowNb={setstatusWorkflowNb} userStatus={userStatus} voterAdresses={voterAdresses} setVoterAdresses={setVoterAdresses} proposals={proposals} setProposals={setProposals} />}
             <Footer />
-        </>
+        </div>
     );
 }
 
