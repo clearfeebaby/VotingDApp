@@ -19,6 +19,15 @@ function Body({ statusWorkflowNb, setstatusWorkflowNb, userStatus, voterAdresses
         5: 'tallyVotes'
     }
 
+        const workflowStatusTraduction = {
+        0: 'Début de l\'enregistrement des participants',
+        1: 'Début de l\'enregistrement des propositions',
+        2: 'Fin de l\'enregistrement',
+        3: 'Début des votes',
+        4: 'Fin des votes',
+        5: 'Nous avons un vainqueur !'
+    }
+
     const goNextstatusWorkflowNb = async () => {
         try {
             const nextStep = parseInt(statusWorkflowNb) + 1;
@@ -78,12 +87,18 @@ function Body({ statusWorkflowNb, setstatusWorkflowNb, userStatus, voterAdresses
         }
     }, [statusWorkflowNb, accounts, contract, userStatus, voterAdresses]);
     return (
-        <main style={{ backgroundColor: '#232327' }} className=" w-full px-16 py-10 h-screen">
-            <div style={{ left: '50%', top: '50%', transform: 'translate(-50, -50)' }} className="absolute">
+        <main style={{ backgroundColor: '#15192C', height: '90vh' }} className=" w-full">
+            {userStatus === 'nonVoter' ? (
+                <div className="bg-black">Désolé mais vous n'avez pas accès au vote</div>
+            ) : (
+            <div className="w-full">
+                <div className="text-5xl mb-16 text-center pt-6" >{workflowStatusTraduction[statusWorkflowNb]}</div>
                 {renderStep}
                 {userStatus === 'owner' ?
-                    <button className="border cursor-pointer" type="button" onClick={() => goNextstatusWorkflowNb(statusWorkflowNb)}>Next Step</button> : <></>}
+                <button className=" text-2xl bg-green-600 py-6 px-16 rounded-xl cursor-pointer absolute right-8 bottom-8 " type="button" onClick={() => goNextstatusWorkflowNb(statusWorkflowNb)}>Next Step</button> : <></>}
             </div>
+            )}
+
         </main >
     );
 }
