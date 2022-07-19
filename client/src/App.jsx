@@ -8,7 +8,7 @@ function App() {
 
   return (
     <EthProvider>
-      <div id="App" className="text-white h-screen">
+      <div id="App" className="text-white">
         <Main />
       </div>
     </EthProvider>

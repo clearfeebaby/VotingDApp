@@ -1,20 +1,14 @@
+import ListProposal from "./ListProposal";
+import ListVoters from "./ListVoters";
+import completed from '../assets/img/completed.svg'
+
 function ProposalsRegistrationEnded({ proposals, voterAdresses, userStatus }) {
     console.log(proposals)
     return (
         <>
-            {userStatus === 'owner' &&
-                <div className="w-full text-center">
-                    <div>Liste des électeurs enregistrés:</div>
-                    <div>
-                        {voterAdresses.map(voterAdress => <div key={voterAdress}>{voterAdress}</div>)}
-                    </div>
-                </div>}
-            <div className="w-full text-center">
-                <div>Liste des propositions enregistrés:</div>
-                <div>
-                    {proposals.map(proposal => <div key={proposal}>{proposal}</div>)}
-                </div>
-            </div>
+            <img className="w-2/12 m-auto" src={completed} alt="fin des propositions" />
+            {userStatus === 'owner' && <ListVoters voterAdresses={voterAdresses}/>}
+            <ListProposal proposals={proposals}/>
         </>
     );
 }

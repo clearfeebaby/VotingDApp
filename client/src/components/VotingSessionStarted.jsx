@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import ListProposal from "./ListProposal";
+import thanks from '../assets/img/thanks.svg'
 
 function VotingSessionStarted({ contract, accounts, proposals, userStatus }) {
 
@@ -38,6 +40,15 @@ function VotingSessionStarted({ contract, accounts, proposals, userStatus }) {
         }
     };
 
+    const backgroundRowArray = (rowNumber) => {
+    let backgroundColor = '';
+    if (rowNumber % 2 === 0) {
+      backgroundColor = '#343963';
+    } else {
+      backgroundColor = '#26293E';
+    }
+    return backgroundColor;
+  };
     // useEffect(() => {
     //     countProposalsVote();
     // }, [proposals, accounts])
@@ -56,26 +67,43 @@ function VotingSessionStarted({ contract, accounts, proposals, userStatus }) {
         <>
 
             {userStatus === 'owner' ?
-                <div><div className="w-full text-center">
-                    <div>Liste des propositions enregistrés:</div>
-                    <div>
-                        {proposals.map((proposal, index) => <div key={index}>{proposal}</div>)}
-                    </div>
-                </div></div>
+                <ListProposal proposals={proposals} />
                 : !hasVoted ?
-                    <div className="w-full text-center">
-                        <div>Liste des propositions enregistrés. Vous pouvez en choisir une en cliquant sur l'icone.</div>
-                        <div>
-                            {proposals.map((proposal, index) => <div key={index}>{proposal}<button onClick={() => addVote(index)}>🗳️</button></div>)}
+                <div className="w-full text-center">
+                    <div  className="mt-16 w-1/2 m-auto rounded-t-3xl overflow-hidden">
+                        <div style={{ backgroundColor: '#5D6AD2'}}  className="text-2xl py-6">
+                            Liste des propositions enregistrés. Vous pouvez en choisir une en cliquant sur l'icone.
+                        </div>
+                        <div  className="w-full text-center">
+                            {proposals.map((proposal, index) => {
+                                return (
+                                    <div className="flex justify-between items-center px-8 py-3" style={{ backgroundColor: backgroundRowArray(index) }} key={proposals}>
+                                       <p>{proposal}</p>
+                                        <button onClick={() => addVote(index)}>👍</button>
+                                    </div>
+                                )
+                            } )}
                         </div>
                     </div>
-                    :
-                    <div className="w-full text-center">
-                        <div>Liste des propositions enregistrés. Merci pour votre vote.</div>
-                        <div>
-                            {proposals.map((proposal, index) => <div key={index} className={`${index === parseInt(votedProposalId) ? "text-blue-500" : ""}`}>{proposal}</div>)}
+                </div>
+        :
+                <div className="w-full text-center">
+                    <div  className="mt-16 w-1/2 m-auto rounded-t-3xl overflow-hidden">
+                        <div style={{ backgroundColor: '#5D6AD2'}}  className="text-2xl py-6">
+                            Liste des propositions enregistrés. Merci pour votre vote.
+                        </div>
+                        <div  className="w-full text-center">
+                            {proposals.map((proposal, index) => {
+                                return (
+                                    <div className=" px-8 py-3" style={{ backgroundColor: backgroundRowArray(index) }} key={proposal}>
+                                       <div key={index} className={`${index === parseInt(votedProposalId) ? "text-blue-500" : ""}`}>{proposal}</div>
+                                    </div>
+                                )
+                            } )}
                         </div>
                     </div>
+                    <img className="w-2/4 mt-16 m-auto" src={thanks} alt="merci pour votre vote" />
+                </div>
             }
         </>
     );

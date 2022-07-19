@@ -6,6 +6,7 @@ import ProposalsRegistrationStarted from "./ProposalsRegistrationStarted";
 import VotesTallied from "./VotesTallied";
 import VotingSessionEnded from "./VotingSessionEnded";
 import VotingSessionStarted from "./VotingSessionStarted";
+import arrowButton from '../assets/img/arrowButton.svg';
 
 function Body({ statusWorkflowNb, setstatusWorkflowNb, userStatus, voterAdresses, setVoterAdresses, proposals, setProposals }) {
     const [renderStep, setRenderStep] = useState(<></>);
@@ -88,7 +89,7 @@ function Body({ statusWorkflowNb, setstatusWorkflowNb, userStatus, voterAdresses
         }
     }, [statusWorkflowNb, accounts, contract, userStatus, voterAdresses, proposals]);
     return (
-        <main style={{ backgroundColor: '#15192C', height: '90vh' }} className=" w-full">
+        <main className="w-full">
             {userStatus === 'nonVoter' ? (
                 <div className="bg-black">Désolé mais vous n'avez pas accès au vote</div>
             ) : (
@@ -96,7 +97,12 @@ function Body({ statusWorkflowNb, setstatusWorkflowNb, userStatus, voterAdresses
                     <div className="text-5xl mb-16 text-center pt-6" >{workflowStatusTraduction[statusWorkflowNb]}</div>
                     {renderStep}
                     {userStatus === 'owner' && workflowStatus[statusWorkflowNb] !== 'tallyVotes' ?
-                        <button className=" text-2xl bg-green-600 py-6 px-16 rounded-xl cursor-pointer absolute right-8 bottom-8 " type="button" onClick={() => goNextstatusWorkflowNb(statusWorkflowNb)}>Next Step</button> : <></>}
+                    <button className="text-2xl bg-green-600 hover:bg-green-500 py-6 px-16 rounded-xl cursor-pointer absolute right-10 bottom-20 " type="button" onClick={() => goNextstatusWorkflowNb(statusWorkflowNb)}>
+                        <div className="flex w-full justify-between items-center">
+                            <p className="mr-6">Next Step</p>
+                            <img src={arrowButton} alt="next" />
+                        </div>
+                    </button> : <></>}
                 </div>
             )}
 

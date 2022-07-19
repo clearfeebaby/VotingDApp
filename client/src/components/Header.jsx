@@ -10,7 +10,7 @@ function Header({ statusWorkflowNb, userStatus }) {
     // const [voterAddress, setVoterAddress] = useState('');
 
     return (
-        <header style= {{backgroundColor: '#2C3249'}}>
+        <header style= {{backgroundColor: '#252525'}}>
             <div className=" w-full flex justify-between items-center py-8 px-4">
                 <div>
                     <p>{userStatusDisplay[userStatus]}</p>

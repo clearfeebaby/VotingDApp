@@ -1,7 +1,7 @@
 function Footer() {
   return (
     <footer style= {{backgroundColor: '#2C3249'}}>
-      <div className=" w-full text-center"> Made with 💜 by Mathieu Gonon</div>
+      <div className=" absolute bottom-5 w-full text-center text-lg"> Made with 💜 by Mathieu Gonon</div>
     </footer >
   );
 }

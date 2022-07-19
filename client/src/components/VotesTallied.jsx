@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import wellDone from "../assets/img/wellDone.svg";
 function VotesTallied({ accounts, contract, proposals }) {
     const [winner, setWinner] = useState(0)
 
@@ -11,13 +11,10 @@ function VotesTallied({ accounts, contract, proposals }) {
         getWinner()
     }, [])
 
-    // useEffect(() => {
-    //     tallyVote()
-    // }, [])
-    console.log(proposals)
     return (
         <div>
-            <div className=" w-full text-center"> Le gagnant est la proposition <em>numero {parseInt(winner) + 1}</em> dont voici la description <em>{proposals[winner]}</em></div>
+            <img src={wellDone} className="w-4/12 m-auto mt-16" alt="" />
+            <div className=" w-full text-center text-3xl mt-3 "> Le gagnant est la proposition <em>numero {parseInt(winner) + 1}</em>: <em>{proposals[winner]}</em></div>
         </div >
     );
 }
