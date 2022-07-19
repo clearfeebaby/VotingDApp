@@ -1,8 +1,21 @@
-function ProposalsRegistrationEnded() {
+function ProposalsRegistrationEnded({ proposals, voterAdresses, userStatus }) {
+    console.log(proposals)
     return (
-        <footer>
-            <div className=" w-full text-center"> ProposalsRegistrationEnded</div>
-        </footer >
+        <>
+            {userStatus === 'owner' &&
+                <div className="w-full text-center">
+                    <div>Liste des électeurs enregistrés:</div>
+                    <div>
+                        {voterAdresses.map(voterAdress => <div key={voterAdress}>{voterAdress}</div>)}
+                    </div>
+                </div>}
+            <div className="w-full text-center">
+                <div>Liste des propositions enregistrés:</div>
+                <div>
+                    {proposals.map(proposal => <div key={proposal}>{proposal}</div>)}
+                </div>
+            </div>
+        </>
     );
 }
 

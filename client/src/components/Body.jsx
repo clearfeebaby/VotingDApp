@@ -22,7 +22,7 @@ function Body({ statusWorkflowNb, setstatusWorkflowNb, userStatus, voterAdresses
     const workflowStatusTraduction = {
         0: 'Début de l\'enregistrement des participants',
         1: 'Début de l\'enregistrement des propositions',
-        2: 'Fin de l\'enregistrement',
+        2: 'Fin de l\'enregistrement des propositions',
         3: 'Début des votes',
         4: 'Fin des votes',
         5: 'Nous avons un vainqueur !'
@@ -34,10 +34,10 @@ function Body({ statusWorkflowNb, setstatusWorkflowNb, userStatus, voterAdresses
             const transac = await contract.methods[workflowStatus[nextStep]]().send({ from: accounts[0] });
             // console.log("transac = " + transac)
             //USELESS ?
-            console.log('return')
-            console.log(await transac.events.WorkflowStatusChange)
+            // console.log('return')
+            // console.log(await transac.events.WorkflowStatusChange)
             const newstatusWorkflowNb = await transac.events.WorkflowStatusChange.returnValues.newStatus;
-            console.log("[goNextstatusWorkflowNb] - newstatusWorkflowNb = " + newstatusWorkflowNb)
+            // console.log("[goNextstatusWorkflowNb] - newstatusWorkflowNb = " + newstatusWorkflowNb)
             setstatusWorkflowNb(newstatusWorkflowNb)
         } catch (error) {
         }
@@ -62,25 +62,25 @@ function Body({ statusWorkflowNb, setstatusWorkflowNb, userStatus, voterAdresses
         // else console.log('no')
         // console.log(statusWorkflowNb)
         // console.log(workflowStatus[statusWorkflowNb])
-        console.log('userStatus', userStatus)
+        // console.log('userStatus', userStatus)
         switch (workflowStatus[statusWorkflowNb]) {
             case 'RegisteringVoters':
                 setRenderStep(<FormRegisteringVoters contract={contract} accounts={accounts} userStatus={userStatus} voterAdresses={voterAdresses} setVoterAdresses={setVoterAdresses} />);
                 break;
             case 'startProposalsRegistering':
-                setRenderStep(<ProposalsRegistrationStarted contract={contract} accounts={accounts} userStatus={userStatus} proposals={proposals} setProposals={setProposals} />);
+                setRenderStep(<ProposalsRegistrationStarted contract={contract} accounts={accounts} userStatus={userStatus} proposals={proposals} setProposals={setProposals} voterAdresses={voterAdresses} />);
                 break;
             case 'endProposalsRegistering':
-                setRenderStep(<ProposalsRegistrationEnded />);
+                setRenderStep(<ProposalsRegistrationEnded proposals={proposals} voterAdresses={voterAdresses} userStatus={userStatus} />);
                 break;
             case 'startVotingSession':
-                setRenderStep(<VotingSessionStarted />);
+                setRenderStep(<VotingSessionStarted contract={contract} accounts={accounts} proposals={proposals} userStatus={userStatus} />);
                 break;
             case 'endVotingSession':
-                setRenderStep(<VotingSessionEnded />);
+                setRenderStep(<VotingSessionEnded contract={contract} accounts={accounts} voterAdresses={voterAdresses} proposals={proposals} userStatus={userStatus} />);
                 break;
             case 'tallyVotes':
-                setRenderStep(<VotesTallied />);
+                setRenderStep(<VotesTallied contract={contract} accounts={accounts} proposals={proposals} />);
                 break;
             default:
                 setRenderStep(<div>Oops il semblerait que cette étape soit inconnue.</div>);
@@ -95,7 +95,7 @@ function Body({ statusWorkflowNb, setstatusWorkflowNb, userStatus, voterAdresses
                 <div className="w-full">
                     <div className="text-5xl mb-16 text-center pt-6" >{workflowStatusTraduction[statusWorkflowNb]}</div>
                     {renderStep}
-                    {userStatus === 'owner' ?
+                    {userStatus === 'owner' && workflowStatus[statusWorkflowNb] !== 'tallyVotes' ?
                         <button className=" text-2xl bg-green-600 py-6 px-16 rounded-xl cursor-pointer absolute right-8 bottom-8 " type="button" onClick={() => goNextstatusWorkflowNb(statusWorkflowNb)}>Next Step</button> : <></>}
                 </div>
             )}

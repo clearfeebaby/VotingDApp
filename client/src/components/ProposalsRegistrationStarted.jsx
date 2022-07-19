@@ -1,9 +1,7 @@
-import { useEffect } from "react";
 import { useState } from "react";
 
-function ProposalsRegistrationStarted({ contract, accounts, userStatus, proposals, setProposals }) {
+function ProposalsRegistrationStarted({ contract, accounts, userStatus, proposals, setProposals, voterAdresses }) {
     const [proposal, setProposal] = useState('');
-    console.log(proposals)
 
     const registerProposal = async () => {
         try {
@@ -11,7 +9,7 @@ function ProposalsRegistrationStarted({ contract, accounts, userStatus, proposal
             const transac = await contract.methods.addProposal(proposal).send({ from: accounts[0] });
             // const addedProposal= await transac.events.VoterRegistered.returnValues.voterAddress;
             setProposals([...proposals, proposal])
-            // setproposals('');
+            setProposal('');
             console.log(`[registerProposal] - La proposal ${proposal} a ete ajoute`)
         } catch (error) {
             console.error(error.message);
@@ -22,25 +20,36 @@ function ProposalsRegistrationStarted({ contract, accounts, userStatus, proposal
 
     // console.log(userStatus)
     return (
-        <div>
-            {userStatus === 'owner' ? <div className=" w-full text-center">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Envoyer une proposition:</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            {proposals.map(propo => <td key={propo}>{propo}</td>)}
-                        </tr>
-                    </tbody>
-                </table>
-                <div className="mb-4">
-                    <input className="bg-black p-4 rounded-xl" type="text" value={proposal} onChange={(e) => setProposal(e.target.value)} />
-                    <button className="bg-purple-400 p-4 rounded-xl" type="submit" onClick={() => registerProposal()}>Register</button>
+        <div className="pt-6">
+            {userStatus === 'voter' ? (
+                <div className="w-full text-center">
+                    <div className="mb-4">
+                        <input type="text" className="bg-transparent border border-purple-400 p-4 rounded-xl w-1/5" placeholder="Entrez votre proposition" value={proposal} onChange={(e) => setProposal(e.target.value)} />
+                        <div>
+                            <button className="bg-purple-400 px-4 py-3 rounded-xl w-1/5 mt-3 hover:bg-purple-600" type="submit" onClick={() => registerProposal()}>Enregistrer</button>
+                        </div>
+                    </div>
+                    <div>Liste des propositions:</div>
+                    <div className="w-full text-center">
+                        {proposals.map(proposal => <div key={proposal}>{proposal}</div>)}
+                    </div>
                 </div>
-            </div> : <div>Titi Vous êtes correctement enregistré. En attente de l'ouverture des propositions</div>}
+            ) : (
+                <>
+                    <div className="w-full text-center">
+                        <div>Liste des électeurs enregistrés:</div>
+                        <div>
+                            {voterAdresses.map(voterAdress => <div key={voterAdress}>{voterAdress}</div>)}
+                        </div>
+                    </div>
+                    <div>
+                        <div className="text-center">Liste des propositions:</div>
+                        <div className="w-full text-center">
+                            {proposals.map(proposal => <div key={proposal}>{proposal}</div>)}
+                        </div>
+                    </div>
+                </>
+            )}
         </div>
     );
 }
