@@ -1,5 +1,4 @@
 function ProposalsRegistrationEnded({ proposals, voterAdresses, userStatus }) {
-    console.log(proposals)
     return (
         <>
             {userStatus === 'owner' &&

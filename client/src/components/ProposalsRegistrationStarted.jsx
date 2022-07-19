@@ -4,21 +4,19 @@ function ProposalsRegistrationStarted({ contract, accounts, userStatus, proposal
     const [proposal, setProposal] = useState('');
 
     const registerProposal = async () => {
-        try {
-            console.log(proposal)
-            const transac = await contract.methods.addProposal(proposal).send({ from: accounts[0] });
-            // const addedProposal= await transac.events.VoterRegistered.returnValues.voterAddress;
-            setProposals([...proposals, proposal])
-            setProposal('');
-            console.log(`[registerProposal] - La proposal ${proposal} a ete ajoute`)
-        } catch (error) {
-            console.error(error.message);
+        if (userStatus === 'voter') {
+            try {
+                await contract.methods.addProposal(proposal).send({ from: accounts[0] });
+                setProposals([...proposals, proposal])
+                setProposal('');
+            } catch (error) {
+                console.error(error.message);
+            }
         }
     }
 
 
 
-    // console.log(userStatus)
     return (
         <div className="pt-6">
             {userStatus === 'voter' ? (

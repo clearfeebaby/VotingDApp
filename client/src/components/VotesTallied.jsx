@@ -11,10 +11,6 @@ function VotesTallied({ accounts, contract, proposals }) {
         getWinner()
     }, [])
 
-    // useEffect(() => {
-    //     tallyVote()
-    // }, [])
-    console.log(proposals)
     return (
         <div>
             <div className=" w-full text-center"> Le gagnant est la proposition <em>numero {parseInt(winner) + 1}</em> dont voici la description <em>{proposals[winner]}</em></div>

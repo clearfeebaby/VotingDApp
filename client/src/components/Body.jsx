@@ -32,37 +32,15 @@ function Body({ statusWorkflowNb, setstatusWorkflowNb, userStatus, voterAdresses
         try {
             const nextStep = parseInt(statusWorkflowNb) + 1;
             const transac = await contract.methods[workflowStatus[nextStep]]().send({ from: accounts[0] });
-            // console.log("transac = " + transac)
-            //USELESS ?
-            // console.log('return')
-            // console.log(await transac.events.WorkflowStatusChange)
             const newstatusWorkflowNb = await transac.events.WorkflowStatusChange.returnValues.newStatus;
-            // console.log("[goNextstatusWorkflowNb] - newstatusWorkflowNb = " + newstatusWorkflowNb)
             setstatusWorkflowNb(newstatusWorkflowNb)
         } catch (error) {
+            console.error(error.message);
         }
     }
-    // const getCurrentStep = async () => {
 
 
     useEffect(() => {
-        //   try {
-        //     await contract.methods.workflowStatus().call({ from: accounts[0] }).then(
-        //       (curStep) => {
-        //         setstatusWorkflowNb(curStep);
-        //       }
-        //     );
-        //   } catch (error) {
-        //   }
-        // }
-        // getCurrentStep();
-
-        // console.log(workflowStatus[statusWorkflowNb])
-        // if (workflowStatus[statusWorkflowNb] === 'RegisteringVoters') console.log('yes')
-        // else console.log('no')
-        // console.log(statusWorkflowNb)
-        // console.log(workflowStatus[statusWorkflowNb])
-        // console.log('userStatus', userStatus)
         switch (workflowStatus[statusWorkflowNb]) {
             case 'RegisteringVoters':
                 setRenderStep(<FormRegisteringVoters contract={contract} accounts={accounts} userStatus={userStatus} voterAdresses={voterAdresses} setVoterAdresses={setVoterAdresses} />);
