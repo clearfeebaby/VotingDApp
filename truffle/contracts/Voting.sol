@@ -202,7 +202,7 @@ contract Voting is Ownable {
             workflowStatus == WorkflowStatus.VotingSessionEnded,
             "Current status is not voting session ended"
         );
-        require(proposals.length < 1000, "Too much proposals");
+        require(proposalsArray.length < 1000, "Too much proposals");
         uint256 _winningProposalId;
         for (uint256 p = 0; p < proposalsArray.length; p++) {
             if (
